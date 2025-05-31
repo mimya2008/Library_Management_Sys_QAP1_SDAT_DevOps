@@ -1,16 +1,14 @@
 package com.keyin.model;
 
 public class Book {
-    private final String isbn;
-    private final String title;
-    private final String author;
-    private boolean isAvailable;
+    private String isbn;
+    private String title;
+    private boolean available;
 
-    public Book(String isbn, String title, String author) {
+    public Book(String isbn, String title, boolean available) {
         this.isbn = isbn;
         this.title = title;
-        this.author = author;
-        this.isAvailable = true;
+        this.available = available;
     }
 
     public String getIsbn() {
@@ -21,27 +19,16 @@ public class Book {
         return title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
     public boolean isAvailable() {
-        return isAvailable;
+        return available;
     }
 
     public void setAvailable(boolean available) {
-        this.isAvailable = available;
+        this.available = available;
     }
-
 
     @Override
     public String toString() {
-        return "Book{" +
-                "isbn='" + isbn + '\'' +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", isAvailable=" + isAvailable +
-                '}';
+        return "ISBN: " + isbn + ", Title: " + title + ", Available: " + available;
     }
 }
-

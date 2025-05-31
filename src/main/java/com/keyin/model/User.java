@@ -6,12 +6,12 @@ import java.util.Set;
 public class User {
     private String userId;
     private String name;
-    private Set<String> borrowedBooks;
+    private Set<String> borrowedBookIsbns;
 
     public User(String userId, String name) {
         this.userId = userId;
         this.name = name;
-        this.borrowedBooks = new HashSet<>();
+        this.borrowedBookIsbns = new HashSet<>();
     }
 
     public String getUserId() {
@@ -22,24 +22,34 @@ public class User {
         return name;
     }
 
+    public boolean canBorrow() {
+        return borrowedBookIsbns.size() < 2; // Max 2 books
+    }
+
     public void borrowBook(String isbn) {
-        borrowedBooks.add(isbn);
+        if (canBorrow()) {
+            borrowedBookIsbns.add(isbn);
+        }
     }
 
     public void returnBook(String isbn) {
-        borrowedBooks.remove(isbn);
+        borrowedBookIsbns.remove(isbn);
     }
 
     public boolean hasBorrowed(String isbn) {
-        return borrowedBooks.contains(isbn);
+        return borrowedBookIsbns.contains(isbn);
     }
 
-    public boolean canBorrow() {
-        return borrowedBooks.size() < 5; // optional rule
+    public Set<String> getBorrowedBookIsbns() {
+        return borrowedBookIsbns;
     }
 
     @Override
     public String toString() {
-        return "User ID: " + userId + ", Name: " + name + ", Borrowed Books: " + borrowedBooks;
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", borrowedBookIsbns=" + borrowedBookIsbns +
+                '}';
     }
 }
