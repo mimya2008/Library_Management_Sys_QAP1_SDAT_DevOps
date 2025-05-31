@@ -2,6 +2,7 @@ package com.keyin.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
@@ -15,16 +16,14 @@ public class UserTest {
 
     @Test
     void testUserCanBorrowInitially() {
-        // Positive case: new user should be able to borrow
         assertTrue(user.canBorrow(), "New user should be able to borrow books.");
     }
 
     @Test
     void testBorrowBookReducesBorrowAvailability() {
         user.borrowBook("ISBN001");
+        assertTrue(user.canBorrow(), "User should still be able to borrow a second book.");
         user.borrowBook("ISBN002");
-
-        // Should reach borrow limit
         assertFalse(user.canBorrow(), "User should not be able to borrow more than 2 books.");
     }
 
@@ -33,28 +32,35 @@ public class UserTest {
         user.borrowBook("ISBN001");
         user.borrowBook("ISBN002");
         user.returnBook("ISBN001");
-
-        // Should allow borrowing again
         assertTrue(user.canBorrow(), "User should be able to borrow again after returning a book.");
     }
 
     @Test
     void testHasBorrowedReturnsTrueForBorrowedBook() {
         user.borrowBook("ISBN123");
-        assertTrue(user.hasBorrowed("ISBN123"), "User should have borrowed the book.");
+        assertTrue(user.hasBorrowed("ISBN123"), "User should have borrowed ISBN123.");
     }
 
     @Test
     void testHasBorrowedReturnsFalseForNonBorrowedBook() {
-        assertFalse(user.hasBorrowed("ISBN999"), "User should not have borrowed the book.");
+        assertFalse(user.hasBorrowed("ISBN999"), "User has not borrowed ISBN999.");
     }
 
     @Test
-    void testToStringContainsUserInfo() {
+    void testBorrowedBookLimitEnforced() {
+        user.borrowBook("ISBN001");
+        user.borrowBook("ISBN002");
+        user.borrowBook("ISBN003"); // should not be added
+        Set<String> borrowed = user.getBorrowedBookIsbns();
+        assertEquals(2, borrowed.size(), "User should only be able to borrow 2 books max.");
+        assertFalse(borrowed.contains("ISBN003"), "Third book should not be borrowed.");
+    }
+
+    @Test
+    void testToStringIncludesUserIdAndName() {
         String output = user.toString();
-        assertTrue(output.contains("U001"));
-        assertTrue(output.contains("Alice"));
-        assertTrue(output.contains("borrowedBookIsbns"));
+        assertTrue(output.contains("U001"), "toString() should contain user ID.");
+        assertTrue(output.contains("Alice"), "toString() should contain user name.");
+        assertTrue(output.contains("borrowedBookIsbns"), "toString() should list borrowed books.");
     }
 }
-

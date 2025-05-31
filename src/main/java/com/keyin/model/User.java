@@ -4,44 +4,42 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User {
-    private final String userId;
-    private final String name;
-    private final Set<String> borrowedBookIsbns;
-    private static final int BORROW_LIMIT = 2;
+    private String userId;
+    private String name;
+    private Set<String> borrowedBooks;
 
     public User(String userId, String name) {
         this.userId = userId;
         this.name = name;
-        this.borrowedBookIsbns = new HashSet<>();
+        this.borrowedBooks = new HashSet<>();
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public boolean canBorrow() {
-        return borrowedBookIsbns.size() < BORROW_LIMIT;
+    public String getName() {
+        return name;
     }
 
     public void borrowBook(String isbn) {
-        borrowedBookIsbns.add(isbn);
+        borrowedBooks.add(isbn);
     }
 
     public void returnBook(String isbn) {
-        borrowedBookIsbns.remove(isbn);
+        borrowedBooks.remove(isbn);
     }
 
     public boolean hasBorrowed(String isbn) {
-        return borrowedBookIsbns.contains(isbn);
+        return borrowedBooks.contains(isbn);
+    }
+
+    public boolean canBorrow() {
+        return borrowedBooks.size() < 5; // optional rule
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", name='" + name + '\'' +
-                ", borrowedBookIsbns=" + borrowedBookIsbns +
-                '}';
+        return "User ID: " + userId + ", Name: " + name + ", Borrowed Books: " + borrowedBooks;
     }
 }
-
