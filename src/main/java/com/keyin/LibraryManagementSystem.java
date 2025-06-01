@@ -63,6 +63,17 @@ public class LibraryManagementSystem {
         // --- Step 7: Display users again ---
         System.out.println("\n--- User List ---");
         printUsers(library.getAllUsers());
+
+        // --- Step 8: Search books by title keyword ---
+        System.out.println("\nSearching for books with title containing 'Java'...");
+        List<Book> foundBooks = library.searchByTitle("Java");
+        if (foundBooks.isEmpty()) {
+            System.out.println("No books found.");
+        } else {
+            System.out.println("Books found:");
+            printBooks(foundBooks);
+        }
+
     }
 
     /**
